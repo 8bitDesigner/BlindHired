@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "BlindHired",
+  "description": "Attempts to anonymize candidates on Hired.com",
+  "version": "1",
+  "converted_from_user_script": true,
+  "content_scripts": [
+    {
+      "exclude_globs": [],
+      "include_globs": [ "*" ],
+      "js": [ "index.js" ],
+      "matches": [
+        "http://hired.com/*",
+        "https://hired.com/*",
+        "http://www.hired.com/*",
+        "https://www.hired.com/*"
+      ],
+      "run_at": "document_end"
+    }
+  ]
+}
