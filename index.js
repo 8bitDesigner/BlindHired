@@ -1,22 +1,5 @@
-var imageSelector = '[alt=Profile], [alt=Thumb], [bo_alt="candidate.name"]'
+var imageSelector = '#profile-photo-image, .question-answer, candidate-listing a.link'
   , nameSelector = '.a--icon + .candidate__info'
-
-function Stylesheet(body) {
-  this.body = body
-  this.tag = null
-}
-
-Stylesheet.prototype.append = function() {
-  var tag = document.createElement('style')
-  tag.appendChild(document.createTextNode(this.body))
-  document.body.appendChild(tag)
-  console.log(tag)
-  this.tag = tag
-}
-
-Stylesheet.prototype.remove = function() {
-  document.body.removeChild(this.tag)
-}
 
 function $(selector) {
   var nodeList = document.querySelectorAll(selector)
@@ -24,13 +7,18 @@ function $(selector) {
 }
 
 function anonymize() {
-  $(nameSelector).forEach(function(node) { node.innerText = 'See Candidate' })
+  var names = $(nameSelector)
+    , thumbs = $(imageSelector)
+
+  names.forEach(function(node) { node.innerText = 'See Candidate' })
+  thumbs.forEach(function(node) {
+    node.addEventListener('mouseover', function() { this.classList.add('toggled') })
+    node.addEventListener('mouseout', function() { this.classList.remove('toggled') })
+  })
 }
 
 function init() {
-  var stylesheet = new Stylesheet(imageSelector + ' { display: none !important }')
-  stylesheet.append()
-  setInterval(anonymize, 500)
+  setInterval(anonymize, 750)
 }
 
 init()
