@@ -9,7 +9,6 @@
       "exclude_globs": [],
       "include_globs": [ "*" ],
       "js": [ "index.js" ],
-      "css": [ "css/index.css" ],
       "matches": [
         "http://hired.com/*",
         "https://hired.com/*",

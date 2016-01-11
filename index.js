@@ -1,24 +1,48 @@
-var imageSelector = '#profile-photo-image, .question-answer, candidate-listing a.link'
-  , nameSelector = '.a--icon + .candidate__info'
+const imageSelector = 'candidate-info--photo, [alt=Profile]'
+const nameSelector = '.candidate-info--name, .employers-candidates-controller .layout__item.xs-gamma'
+const interval = 250
 
-function $(selector) {
-  var nodeList = document.querySelectorAll(selector)
+function $ (selector) {
+  const nodeList = document.querySelectorAll(selector)
   return Array.prototype.slice.call(nodeList)
 }
 
-function anonymize() {
-  var names = $(nameSelector)
-    , thumbs = $(imageSelector)
+function anonymize () {
+  const names = $(nameSelector)
+  const thumbs = $(imageSelector)
 
-  names.forEach(function(node) { node.innerText = 'See Candidate' })
-  thumbs.forEach(function(node) {
-    node.addEventListener('mouseover', function() { this.classList.add('toggled') })
-    node.addEventListener('mouseout', function() { this.classList.remove('toggled') })
+  function anonymized (node, newVal) {
+    if (newVal) {
+      node.dataset.anonymized = newVal
+    }
+
+    return node.dataset.anonymized === 'true'
+  }
+
+  names.filter(n => !anonymized(n)).forEach(function (node) {
+    const placeholder = 'Candidate Name'
+
+    node.dataset.originalName = node.innerText
+    node.innerText = placeholder
+
+    node.addEventListener('mouseover', () => node.innerText = node.dataset.originalName)
+    node.addEventListener('mouseout', () => node.innerText = placeholder)
+
+    anonymized(node, 'true')
+  })
+
+  thumbs.filter(n => !anonymized(n)).forEach(function (node) {
+    node.style.opacity = 0
+
+    node.addEventListener('mouseover', () => node.style.opacity = 0)
+    node.addEventListener('mouseout', () => node.style.opacity = 1)
+
+    anonymized(node, 'true')
   })
 }
 
-function init() {
-  setInterval(anonymize, 750)
+function init () {
+  setInterval(anonymize, interval)
 }
 
 init()
